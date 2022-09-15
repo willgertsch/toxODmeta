@@ -2,7 +2,7 @@
 # M_fun: information function
 # obj_fun: objective function of information matrix
 # theta: parameter values to pass through to M_fun
-construct = function(M_fun, obj_fun, theta) {
+obj_fun_factory = function(M_fun, obj_fun, theta) {
 
   # these are used in interface function
   force(M_fun)
