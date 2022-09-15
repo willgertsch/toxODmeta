@@ -21,7 +21,6 @@ construct = function(M_fun, obj_fun, theta) {
     if (s > 1) # constraint implementation
       return(-Inf)
 
-    #obj_value = suppressWarnings(log(det(M_fun(x, w, theta))))
     obj_value = obj_fun(M_fun(x, w, theta))
 
     # deal with missing
