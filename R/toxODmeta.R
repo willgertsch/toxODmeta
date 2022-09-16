@@ -1,7 +1,7 @@
 # main function that the user/Shiny app calls
 # inputs:
 # problem: list used to define optimal design problem
-# problem$model: model: logisticFP, exp, loglogistic, weibull
+# problem$model: model: logistic, exp, loglogistic, weibull
 # problem$theta: local parameter values
 # problem$obj: name of objective function
 # problem$bound: upper dose limit
@@ -42,7 +42,7 @@ toxODmeta = function(problem, alg_options, seed) {
 
   # make objective function
   theta = problem$theta
-  obj_fun = obj_fun_factory(M_fun, obj_fun, theta)
+  obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta)
 
   # set up bounds
   pts = problem$pts
@@ -56,8 +56,9 @@ toxODmeta = function(problem, alg_options, seed) {
 
   # find optimal design using metaOpt
   algorithm = alg_options$algorithm
+  # stack overflow: why?
   result = metaheuristicOpt::metaOpt(
-    obj_fun,
+    obj_fun_M,
     optimType = "MAX",
     algorithm = algorithm,
     numVar = 2 * pts,
