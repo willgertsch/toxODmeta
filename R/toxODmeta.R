@@ -16,8 +16,16 @@
 toxODmeta = function(problem, alg_options, seed) {
 
   # process input
-  # select model
   model = problem$model
+  obj = problem$obj
+  theta = problem$theta
+  pts = problem$pts
+  bound = problem$bound
+  swarm = alg_options$swarm
+  iter = alg_options$iter
+  algorithm = alg_options$algorithm
+
+  # select model
   if (model == "logistic") {
     M_fun = M.logistic
   }
@@ -35,28 +43,20 @@ toxODmeta = function(problem, alg_options, seed) {
   }
 
   # select objective function
-  obj = problem$obj
   if (obj == "D") {
     obj_fun = obj.D
   }
 
   # make objective function
-  theta = problem$theta
   obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta)
 
   # set up bounds
-  pts = problem$pts
-  bound = problem$bound
   rangeVar = matrix(c(rep(c(0, bound), pts), rep(c(0,1), pts)), nrow = 2)
 
   # set up algorithm options
-  swarm = alg_options$swarm
-  iter = alg_options$iter
   control = list(numPopulation = swarm, maxIter = iter)
 
   # find optimal design using metaOpt
-  algorithm = alg_options$algorithm
-  # stack overflow: why?
   result = metaheuristicOpt::metaOpt(
     obj_fun_M,
     optimType = "MAX",
@@ -66,6 +66,18 @@ toxODmeta = function(problem, alg_options, seed) {
     control,
     seed = seed
   )
+
+  # extract design points and weights
+  vars = result$result
+  x = vars[1:pts]
+  w = vars[(pts+1):(2*pts)]
+
+  # compute information matrix for optimal design
+  M = M_fun(x, w, theta)
+
+  # plot sensitivity function
+  result$sens_plot = plot_sens(x, w, problem, M)
+
 
   # process output
   out = result
