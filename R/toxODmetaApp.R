@@ -21,9 +21,49 @@ toxODmetaApp = function(...) {
       id = "tabpanel",
       tabPanel(
         "Background",
-        "This is some test text. The final app will have a broad overview of what
-        the app does and the theory behind some of the models and optimal design.",
-        "Does MathJax work? Let's test pi: \\(\\pi\\)"
+        titlePanel(
+          "Background information for optimal design, models, and algorithms"
+        ),
+        tags$h3(
+          "Overiew",
+          style = "text-align:left;"
+        ),
+        tags$p(
+          "This tab gives a short introduction to some of the background theory
+          used in this app. For more information, refer to to our paper."
+        ),
+        tags$h3(
+          "Optimal Design",
+          style = "text-align:left;"
+        ),
+        tags$p(
+          "This section explains the optimal design concepts used in this app."
+        ),
+        tags$h3(
+          "Models",
+          style = "text-align:left;"
+        ),
+        tags$p(
+          "This section describes the models available in the app. Currently,
+          these are all models for single variable binary dose-response."
+        ),
+        tags$p(
+          "The logistic model is defined as
+          $$
+          P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d )]}
+          $$
+          "
+        ),
+        tags$h3(
+          "Algorithms",
+          style = "text-align:left;"
+        ),
+        tags$p(
+          "This section describes the algorithms available to use in the app.
+          The app currently supports a selection of algorithms from the
+          metaheuristicOpt package. The algorithms in this selection were
+          included because they had the best performance."
+        )
       ),
       tabPanel(
         "Model"
