@@ -88,6 +88,14 @@ toxODmetaApp = function(...) {
           $$
           "
         ),
+        tags$p(
+          "The loglogistic model is defined as
+          $$
+          P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
+          $$
+          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
+          "
+        ),
         tags$h3(
           "Algorithms",
           style = "text-align:left;"
