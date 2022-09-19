@@ -71,5 +71,35 @@ M.logistic.quad = function(x, w, theta) {
 }
 
 
+# exponential regression with linear predictor
+# P(d) = 1 - exp[-(b0 + b1 * d)]
+M.exponential = function(x, w, theta) {
+
+  # predictor
+  eta = theta[1] + theta[2] * x
+
+  # nonlinear weight function
+  sigma = exp(-eta)
+
+  # information matrix
+  IM = 0
+  for (i in 1:length(x)) {
+
+    m12 = x[i]
+
+    IM_i = w[i] * sigma[i] * matrix(c(
+      1, m12,
+      m12, x[i]^2
+    ), ncol=2)
+
+    IM = IM + IM_i
+
+  }
+
+  # return
+  IM
+}
+
+
 
 

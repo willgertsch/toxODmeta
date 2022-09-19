@@ -40,3 +40,22 @@ sens.logistic.quad.D = function(z, M, theta) {
   return(y)
 
 }
+
+# sensitivity function for exponential
+sens.exponential = function(z, M, theta) {
+
+  # check if M is invertible
+  if (class(try(solve(M),silent=T))[1]!="matrix") {
+    y = 1
+  }
+  else {
+    Minv = solve(M)
+    b = c(1, z)
+    p = nrow(M)
+    etaz = theta[1] + theta[2] * z
+    sigmaz = exp(-etaz)
+    y = sigmaz * t(b) %*% Minv %*% b - p
+  }
+
+  return(y)
+}
