@@ -17,7 +17,10 @@ plot_sens = function(x, w, problem, M) {
     sens_fun = sens.logistic.quad.D
   }
   else if (problem$obj == "D" & problem$model == "exponential") {
-    sens_fun = sens.exponential
+    sens_fun = sens.exponential.D
+  }
+  else if (problem$obj == "D" & problem$model == "weibull") {
+    sens_fun = sens.weibull.D
   }
   else {
     stop("Sensitivity function does not exist for problem")

@@ -39,7 +39,7 @@ toxODmeta = function(problem, alg_options, seed) {
 
   }
   else if (model == "weibull") {
-
+    M_fun = M.weibull
   }
   else {
     stop("Model not supported")

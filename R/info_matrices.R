@@ -101,5 +101,41 @@ M.exponential = function(x, w, theta) {
 }
 
 
+# weibull model with linear predictor
+M.weibull = function(x, w, theta) {
+
+  # predictor
+  eta = theta[1] + theta[2] * x ^ theta[3]
+
+  # nonlinear weight function
+  sigma = exp(-eta)
+
+  # dose transformations
+  x1 = x^theta[3]
+  x2 = x1 * log(x)
+
+  # information matrix
+  IM = 0
+  for (i in 1:length(x)) {
+
+    m12 = x1[i]
+    m13 = x2[i]
+    m23 = x1[i]*x2[i]
+
+    IM_i = w[i] * sigma[i]^2 * matrix(c(
+      1, m12, m13,
+      m12, x1[i]^2, m23,
+      m13, m23, x2[i]^2
+    ), ncol=3)
+
+    IM = IM + IM_i
+
+  }
+
+  # return
+  IM
+}
+
+
 
 

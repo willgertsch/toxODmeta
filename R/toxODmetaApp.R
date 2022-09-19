@@ -6,7 +6,8 @@ toxODmetaApp = function(...) {
   models = c(
     "logistic",
     "logistic-quadratic",
-    "exponential"
+    "exponential",
+    "weibull"
   )
   objectives = c(
     "D"
@@ -68,6 +69,13 @@ toxODmetaApp = function(...) {
           "The exponential (one-hit) model is defined as
           $$
           P(d) = 1 - \\exp\\left[ -(\\theta_0 + \\theta_1 d)\\right]
+          $$
+          "
+        ),
+        tags$p(
+          "The Weibull model is defined as
+          $$
+          P(d) = 1 - \\exp\\left[ -(\\theta_0 + \\theta_1 d^{ \\theta_2 })\\right]
           $$
           "
         ),
@@ -257,6 +265,8 @@ toxODmetaApp = function(...) {
           problem$theta == problem$theta[1:3]
         else if (problem$model == "exponential")
           problem$theta = problem$theta[1:2]
+        else if (problem$model == "weibull")
+          problem$theta = problem$theta[1:3]
 
         # set up algorithm options
         alg_options = list()
