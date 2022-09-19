@@ -36,7 +36,7 @@ toxODmeta = function(problem, alg_options, seed) {
     M_fun = M.exponential
   }
   else if (model == "loglogistic") {
-
+    M_fun = M.loglogistic
   }
   else if (model == "weibull") {
     M_fun = M.weibull

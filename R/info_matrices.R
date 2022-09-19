@@ -136,6 +136,38 @@ M.weibull = function(x, w, theta) {
   IM
 }
 
+# log-logistic model
+M.loglogistic = function(x, w, theta) {
 
+  eta = theta[1] + theta[2] * log(x)
+  sigma = exp(eta)/(1 + exp(eta))^2
+  loglogit = 1/(1+exp(-eta))
+
+  # gradient components
+  x1 = (theta[3] - 1) * sigma
+  x2 = (theta[3] - 1) * sigma * log(x)
+  x3 = 1 - loglogit
+
+  # information matrix
+  IM = 0
+  for (i in 1:length(x)) {
+
+    m12 = x1[i]*x2[i]
+    m23 = x2[i]*x3[i]
+    m13 = x1[i]*x3[i]
+
+    IM_i = w[i] * matrix(c(
+      x1[i]^2, m12, m13,
+      m12, x2[i]^2, m23,
+      m13, m23, x3[i]^2
+    ), ncol=3)
+
+    IM = IM + IM_i
+
+  }
+
+  # return
+  IM
+}
 
 
