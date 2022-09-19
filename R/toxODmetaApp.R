@@ -4,13 +4,15 @@ toxODmetaApp = function(...) {
 
   # global variables accessible to shiny app
   models = c(
-    "logistic"
+    "logistic",
+    "logistic-quadratic"
   )
   objectives = c(
     "D"
   )
   algorithms = c(
-    "PSO"
+    "PSO",
+    "DE"
   )
 
   ui = fixedPage(
@@ -51,6 +53,13 @@ toxODmetaApp = function(...) {
           "The logistic model is defined as
           $$
           P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d )]}
+          $$
+          "
+        ),
+        tags$p(
+          "The quadratic logistic model is defined as
+          $$
+          P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d  + \\theta_2 d^2)]}
           $$
           "
         ),
@@ -96,6 +105,14 @@ toxODmetaApp = function(...) {
             numericInput(
               "theta1",
               "\\(\\theta_1\\)",
+              1,
+              -Inf,
+              Inf,
+              0.01
+            ),
+            numericInput(
+              "theta2",
+              "\\(\\theta_2\\)",
               1,
               -Inf,
               Inf,
@@ -220,10 +237,16 @@ toxODmetaApp = function(...) {
         # set up design problem
         problem = list()
         problem$model = input$model
-        problem$theta = c(input$theta0, input$theta1)
+        problem$theta = c(input$theta0, input$theta1, input$theta2)
         problem$obj = input$objective
         problem$bound = input$bound
         problem$pts = input$pts
+
+        # adjust theta to only keep the number of parameters in the model
+        if (problem$model == "logistic")
+          problem$theta = problem$theta[1:2]
+        else if (problem$model == "logistic-quadratic")
+          problem$theta == problem$theta[1:3]
 
         # set up algorithm options
         alg_options = list()

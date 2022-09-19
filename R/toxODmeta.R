@@ -29,6 +29,9 @@ toxODmeta = function(problem, alg_options, seed) {
   if (model == "logistic") {
     M_fun = M.logistic
   }
+  else if (model == "logistic-quadratic") {
+    M_fun = M.logistic.quad
+  }
   else if (model == "exp") {
 
   }
