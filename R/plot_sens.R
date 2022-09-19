@@ -22,6 +22,9 @@ plot_sens = function(x, w, problem, M) {
   else if (problem$obj == "D" & problem$model == "weibull") {
     sens_fun = sens.weibull.D
   }
+  else if (problem$obj == "D" & problem$model == "loglogistic") {
+    sens_fun = sens.loglogistic.D
+  }
   else {
     stop("Sensitivity function does not exist for problem")
   }

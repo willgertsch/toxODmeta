@@ -6,6 +6,7 @@ toxODmetaApp = function(...) {
   models = c(
     "logistic",
     "logistic-quadratic",
+    "loglogistic",
     "exponential",
     "weibull"
   )
@@ -59,6 +60,14 @@ toxODmetaApp = function(...) {
           "
         ),
         tags$p(
+          "The loglogistic model is defined as
+          $$
+          P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
+          $$
+          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
+          "
+        ),
+        tags$p(
           "The quadratic logistic model is defined as
           $$
           P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d  + \\theta_2 d^2)]}
@@ -77,6 +86,14 @@ toxODmetaApp = function(...) {
           $$
           P(d) = 1 - \\exp\\left[ -(\\theta_0 + \\theta_1 d^{ \\theta_2 })\\right]
           $$
+          "
+        ),
+        tags$p(
+          "The loglogistic model is defined as
+          $$
+          P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
+          $$
+          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
           "
         ),
         tags$h3(
@@ -266,6 +283,8 @@ toxODmetaApp = function(...) {
         else if (problem$model == "exponential")
           problem$theta = problem$theta[1:2]
         else if (problem$model == "weibull")
+          problem$theta = problem$theta[1:3]
+        else if (problem$model == "loglogistic")
           problem$theta = problem$theta[1:3]
 
         # set up algorithm options

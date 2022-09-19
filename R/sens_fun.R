@@ -61,7 +61,7 @@ sens.exponential.D = function(z, M, theta) {
   return(y)
 }
 
-# sensitivity function for weibull
+# sensitivity function for Weibull
 sens.weibull.D = function(z, M, theta) {
 
   # check if M is invertible
@@ -77,6 +77,30 @@ sens.weibull.D = function(z, M, theta) {
     sigmaz = exp(-etaz)^2
     p = nrow(M)
     y = sigmaz * t(b) %*% Minv %*% b - p
+  }
+  return(y)
+}
+
+# sensitivity function for loglogistic
+sens.loglogistic.D = function(z, M, theta) {
+  # check if M is invertible
+  if (class(try(solve(M),silent=T))[1]!="matrix") {
+    y = 1
+  }
+  else {
+    Minv = solve(M)
+
+    etaz = theta[1] + theta[2] * log(z)
+    sigmaz = exp(etaz)/(1 + exp(etaz))^2
+    loglogitz = 1/(1+exp(-etaz))
+
+    z1 = (theta[3] - 1) * sigmaz
+    z2 = (theta[3] - 1) * sigmaz * log(z)
+    z3 = 1 - loglogitz
+    b = c(z1, z2, z3)
+
+    p = nrow(M)
+    y = t(b) %*% Minv %*% b - p
   }
   return(y)
 }
