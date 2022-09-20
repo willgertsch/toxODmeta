@@ -30,7 +30,16 @@ plot_sens = function(x, w, problem, M) {
   }
 
   # compute sensitivity function
-  yvals = sapply(xvals, sens_fun, M, problem$theta)
+  # check first if matrix is invertible and then invert
+  if (!checkMinv(M)) {
+    # using y=1 to denote matrix singularity
+    yvals = rep(1, length(xvals))
+  }
+  else {
+    Minv = solve(M)
+    yvals = sapply(xvals, sens_fun, Minv, problem$theta)
+  }
+
 
   # plot
   p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
