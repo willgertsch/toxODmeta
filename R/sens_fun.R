@@ -1,6 +1,6 @@
 # sensitivity functions
 # z: independent variable
-# M: pre-computed information matrix for design
+# Minv: pre-computed inverse information matrix for design
 # theta: parameter vector
 sens.logistic.D = function(z, Minv, theta) {
 
@@ -12,6 +12,16 @@ sens.logistic.D = function(z, Minv, theta) {
 
   return(y)
 
+}
+
+sens.logistic.A = function(z, Minv, theta) {
+
+  Minv2 = Minv %*% Minv
+  b = c(1, z)
+  etaz = theta[1] + theta[2] * z
+  sigmaz = exp(etaz)/(1+exp(etaz))^2
+  y = sigmaz * t(b) %*% Minv2 %*% b - sum(diag(Minv))
+  return(y)
 }
 
 # sensitivity function for quadratic predictor

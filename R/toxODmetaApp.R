@@ -11,7 +11,8 @@ toxODmetaApp = function(...) {
     "weibull"
   )
   objectives = c(
-    "D"
+    "D",
+    "A"
   )
   algorithms = c(
     "PSO",
@@ -315,6 +316,10 @@ toxODmetaApp = function(...) {
         # show objective criteria function
         if (input$objective == "D") {
           cat("log(Det(M)) = ", obj_val, "\n", sep = "")
+        }
+        else if (input$objective == "A") {
+          # maximizing negation of objective => negate objective value
+          cat("trM^-1 = ", -obj_val, "\n", sep = "")
         }
 
         # process and display design

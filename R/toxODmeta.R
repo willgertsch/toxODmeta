@@ -49,6 +49,11 @@ toxODmeta = function(problem, alg_options, seed) {
   if (obj == "D") {
     obj_fun = obj.D
   }
+  else if (obj == "A") {
+    obj_fun = obj.A
+  }
+  else
+    stop("Objective not supported")
 
   # make objective function
   obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta)

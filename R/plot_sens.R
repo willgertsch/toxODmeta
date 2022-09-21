@@ -13,6 +13,9 @@ plot_sens = function(x, w, problem, M) {
   if (problem$obj == "D" & problem$model == "logistic") {
     sens_fun = sens.logistic.D
   }
+  else if (problem$obj == "A" & problem$model == "logistic") {
+    sens_fun = sens.logistic.A
+  }
   else if (problem$obj == "D" & problem$model == "logistic-quadratic") {
     sens_fun = sens.logistic.quad.D
   }
