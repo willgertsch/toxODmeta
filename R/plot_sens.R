@@ -19,14 +19,26 @@ plot_sens = function(x, w, problem, M) {
   else if (problem$obj == "D" & problem$model == "logistic-quadratic") {
     sens_fun = sens.logistic.quad.D
   }
+  else if (problem$obj == "A" & problem$model == "logistic-quadratic") {
+    sens_fun = sens.logistic.quad.A
+  }
   else if (problem$obj == "D" & problem$model == "exponential") {
     sens_fun = sens.exponential.D
+  }
+  else if (problem$obj == "A" & problem$model == "exponential") {
+    sens_fun = sens.exponential.A
   }
   else if (problem$obj == "D" & problem$model == "weibull") {
     sens_fun = sens.weibull.D
   }
+  else if (problem$obj == "A" & problem$model == "weibull") {
+    sens_fun = sens.weibull.A
+  }
   else if (problem$obj == "D" & problem$model == "loglogistic") {
     sens_fun = sens.loglogistic.D
+  }
+  else if (problem$obj == "A" & problem$model == "loglogistic") {
+    sens_fun = sens.loglogistic.A
   }
   else {
     stop("Sensitivity function does not exist for problem")
