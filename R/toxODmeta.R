@@ -7,7 +7,7 @@
 # problem$bound: upper dose limit
 # problem$lam: dual objective parameter
 # problem$d1: test dose
-# problem$d2: reference dose
+# problem$d0: reference dose
 # problem$pts: number of design points
 # alg_options: list used to define algorithm options
 # alg_options$algorithm: name of algorithm to use
@@ -21,6 +21,8 @@ toxODmeta = function(problem, alg_options, seed) {
   theta = problem$theta
   pts = problem$pts
   bound = problem$bound
+  d1 = problem$d1
+  d0 = problem$d0
   swarm = alg_options$swarm
   iter = alg_options$iter
   algorithm = alg_options$algorithm
@@ -46,17 +48,25 @@ toxODmeta = function(problem, alg_options, seed) {
   }
 
   # select objective function
+  param = c() # options for objective function
   if (obj == "D") {
     obj_fun = obj.D
   }
   else if (obj == "A") {
     obj_fun = obj.A
   }
+  # else if (obj == "addrisk") {
+  #   obj_fun = obj.addrisk
+  #
+  #   # compute gradients
+  #   grad = grad_fun_factory(model)
+  #   param = c(grad(d1), grad(d0))
+  # }
   else
     stop("Objective not supported")
 
   # make objective function
-  obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta)
+  obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta, param)
 
   # set up bounds
   rangeVar = matrix(c(rep(c(0, bound), pts), rep(c(0,1), pts)), nrow = 2)
