@@ -2,46 +2,23 @@
 # problem is same list from toxODmeta
 # x, w are design point and weight vectors
 # M: pre-computed information matrix
-# sens_fun is a function from sens_fun.R
-plot_sens = function(x, w, problem, M) {
+# grad_fun: gradient function
+plot_sens = function(x, w, problem, M, grad_fun) {
 
   # x values
   step = problem$bound/1000
   xvals = seq(0, problem$bound, step)
 
-  # select sensitivity function
-  if (problem$obj == "D" & problem$model == "logistic") {
-    sens_fun = sens.logistic.D
+  # select derivative function for sensitivity function
+  if (problem$obj == "D") {
+    dPsi = dPsi.D
   }
-  else if (problem$obj == "A" & problem$model == "logistic") {
-    sens_fun = sens.logistic.A
-  }
-  else if (problem$obj == "D" & problem$model == "logistic-quadratic") {
-    sens_fun = sens.logistic.quad.D
-  }
-  else if (problem$obj == "A" & problem$model == "logistic-quadratic") {
-    sens_fun = sens.logistic.quad.A
-  }
-  else if (problem$obj == "D" & problem$model == "exponential") {
-    sens_fun = sens.exponential.D
-  }
-  else if (problem$obj == "A" & problem$model == "exponential") {
-    sens_fun = sens.exponential.A
-  }
-  else if (problem$obj == "D" & problem$model == "weibull") {
-    sens_fun = sens.weibull.D
-  }
-  else if (problem$obj == "A" & problem$model == "weibull") {
-    sens_fun = sens.weibull.A
-  }
-  else if (problem$obj == "D" & problem$model == "loglogistic") {
-    sens_fun = sens.loglogistic.D
-  }
-  else if (problem$obj == "A" & problem$model == "loglogistic") {
-    sens_fun = sens.loglogistic.A
+  else if (problem$obj == "A") {
+    dPsi = dPsi.A
   }
   else {
-    stop("Sensitivity function does not exist for problem")
+    # expand this to handle solving design problems with no verification
+    stop("No derivative specified for this objective.")
   }
 
   # compute sensitivity function
@@ -52,7 +29,7 @@ plot_sens = function(x, w, problem, M) {
   }
   else {
     Minv = solve(M)
-    yvals = sapply(xvals, sens_fun, Minv, problem$theta)
+    yvals = sapply(xvals, sens, grad_fun, dPsi, M, problem$theta)
   }
 
 

@@ -29,19 +29,19 @@ toxODmeta = function(problem, alg_options, seed) {
 
   # select model
   if (model == "logistic") {
-    M_fun = M.logistic
+    grad_fun = grad.logistic
   }
   else if (model == "logistic-quadratic") {
-    M_fun = M.logistic.quad
+    grad_fun = grad.logistic.quad
   }
   else if (model == "exponential") {
-    M_fun = M.exponential
+    grad_fun = grad.exponential
   }
   else if (model == "loglogistic") {
-    M_fun = M.loglogistic
+    grad_fun = grad.loglogistic
   }
   else if (model == "weibull") {
-    M_fun = M.weibull
+    grad_fun = grad.weibull
   }
   else {
     stop("Model not supported")
@@ -66,7 +66,7 @@ toxODmeta = function(problem, alg_options, seed) {
     stop("Objective not supported")
 
   # make objective function
-  obj_fun_M = obj_fun_factory(M_fun, obj_fun, theta, param)
+  obj_fun_M = obj_fun_factory(grad_fun, obj_fun, theta, param)
 
   # set up bounds
   rangeVar = matrix(c(rep(c(0, bound), pts), rep(c(0,1), pts)), nrow = 2)
@@ -91,10 +91,10 @@ toxODmeta = function(problem, alg_options, seed) {
   w = vars[(pts+1):(2*pts)]
 
   # compute information matrix for optimal design
-  M = M_fun(x, w, theta)
+  M = M.nonlinear(x, w, theta, grad_fun)
 
   # plot sensitivity function
-  result$sens_plot = plot_sens(x, w, problem, M)
+  result$sens_plot = plot_sens(x, w, problem, M, grad_fun)
 
 
   # process output

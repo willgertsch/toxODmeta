@@ -18,5 +18,5 @@ test_that("logistic 0,1 on [0, 100]", {
   out = toxODmeta(problem, alg_options, 155)
 
   # should match to 3 decimal places
-  expect_equal(round(out$optimumValue[1], 3), -3.595)
+  expect_equal(round(out$optimumValue[1], 3), -7.152)
 })
