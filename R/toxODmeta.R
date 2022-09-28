@@ -34,6 +34,9 @@ toxODmeta = function(problem, alg_options, seed) {
   else if (model == "logistic-quadratic") {
     grad_fun = grad.logistic.quad
   }
+  else if (model == "logistic-cubic") {
+    grad_fun = grad.logistic.cubic
+  }
   else if (model == "exponential") {
     grad_fun = grad.exponential
   }

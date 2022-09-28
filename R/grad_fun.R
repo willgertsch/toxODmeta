@@ -18,6 +18,13 @@ grad.logistic.quad = function(x, theta) {
   return(grad)
 }
 
+grad.logistic.cubic = function(x, theta) {
+  eta = theta[1] + theta[2] * x + theta[3] * x^2 + theta[4] * x^3
+  sigma = exp(eta)/(1 + exp(eta))^2
+  grad = sigma * c(1, x, x^2, x^3)
+  return(grad)
+}
+
 grad.loglogistic = function(x, theta) {
 
   eta = theta[1] + theta[2] * log(x)

@@ -6,6 +6,7 @@ toxODmetaApp = function(...) {
   models = c(
     "logistic",
     "logistic-quadratic",
+    "logistic-cubic",
     "loglogistic",
     "exponential",
     "weibull"
@@ -72,6 +73,13 @@ toxODmetaApp = function(...) {
           "The quadratic logistic model is defined as
           $$
           P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d  + \\theta_2 d^2)]}
+          $$
+          "
+        ),
+        tags$p(
+          "The cubic logistic model is defined as
+          $$
+          P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d  + \\theta_2 d^2 + \\theta_3 d^3)]}
           $$
           "
         ),
@@ -154,6 +162,14 @@ toxODmetaApp = function(...) {
             numericInput(
               "theta2",
               "\\(\\theta_2\\)",
+              1,
+              -Inf,
+              Inf,
+              0.01
+            ),
+            numericInput(
+              "theta3",
+              "\\(\\theta_3\\)",
               1,
               -Inf,
               Inf,
@@ -390,7 +406,7 @@ toxODmetaApp = function(...) {
         # set up design problem
         problem = list()
         problem$model = input$model
-        problem$theta = c(input$theta0, input$theta1, input$theta2)
+        problem$theta = c(input$theta0, input$theta1, input$theta2, input$theta3)
         problem$obj = input$objective
         problem$bound = input$bound
         problem$pts = input$pts
@@ -399,7 +415,9 @@ toxODmetaApp = function(...) {
         if (problem$model == "logistic")
           problem$theta = problem$theta[1:2]
         else if (problem$model == "logistic-quadratic")
-          problem$theta == problem$theta[1:3]
+          problem$theta = problem$theta[1:3]
+        else if (problem$model == "logistic-cubic")
+          problem$theta = problem$theta[1:4]
         else if (problem$model == "exponential")
           problem$theta = problem$theta[1:2]
         else if (problem$model == "weibull")
