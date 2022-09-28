@@ -7,6 +7,7 @@ toxODmetaApp = function(...) {
     "logistic",
     "logistic-quadratic",
     "logistic-cubic",
+    "logistic-fp",
     "loglogistic",
     "exponential",
     "weibull"
@@ -61,14 +62,7 @@ toxODmetaApp = function(...) {
           $$
           "
         ),
-        tags$p(
-          "The loglogistic model is defined as
-          $$
-          P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
-          $$
-          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
-          "
-        ),
+
         tags$p(
           "The quadratic logistic model is defined as
           $$
@@ -81,6 +75,23 @@ toxODmetaApp = function(...) {
           $$
           P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d  + \\theta_2 d^2 + \\theta_3 d^3)]}
           $$
+          "
+        ),
+        tags$p(
+          "The fractional polynomial logistic model is defined as
+          $$
+          P(d) = \\frac{1}{1 + \\exp[-(\\theta_0 + \\theta_1 d^{\\theta_3} + \\theta_2 d^{\\theta_4})]}
+          $$
+          Note that \\(\\theta_3, \\theta_4\\) are considered fixed and their estimation is not considered in the optimal design objectives.
+          For repeated powers, the linear predictor will include log terms. Refer to Royston and Altman (1994) for more information.
+          "
+        ),
+        tags$p(
+          "The loglogistic model is defined as
+          $$
+          P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
+          $$
+          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
           "
         ),
         tags$p(
@@ -170,6 +181,14 @@ toxODmetaApp = function(...) {
             numericInput(
               "theta3",
               "\\(\\theta_3\\)",
+              1,
+              -Inf,
+              Inf,
+              0.01
+            ),
+            numericInput(
+              "theta4",
+              "\\(\\theta_4\\)",
               1,
               -Inf,
               Inf,
@@ -406,7 +425,7 @@ toxODmetaApp = function(...) {
         # set up design problem
         problem = list()
         problem$model = input$model
-        problem$theta = c(input$theta0, input$theta1, input$theta2, input$theta3)
+        problem$theta = c(input$theta0, input$theta1, input$theta2, input$theta3, input$theta4)
         problem$obj = input$objective
         problem$bound = input$bound
         problem$pts = input$pts
@@ -418,6 +437,8 @@ toxODmetaApp = function(...) {
           problem$theta = problem$theta[1:3]
         else if (problem$model == "logistic-cubic")
           problem$theta = problem$theta[1:4]
+        else if (problem$model == "logistic-fp")
+          problem$theta = problem$theta[1:5]
         else if (problem$model == "exponential")
           problem$theta = problem$theta[1:2]
         else if (problem$model == "weibull")

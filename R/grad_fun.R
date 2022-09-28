@@ -25,6 +25,22 @@ grad.logistic.cubic = function(x, theta) {
   return(grad)
 }
 
+# 2nd degree fractional polynomial predictor
+grad.logistic.fp = function(x, theta) {
+
+  # theta4 and theta5 are power paramters in this model
+  powers = c(0, theta[4], theta[5])
+
+  # x1 is the 2nd term in the polynomial
+  x1 = H(2, x, powers)
+  x2 = H(3, x, powers)
+  eta = theta[1] + theta[2] * x1 + theta[3] * x2
+  sigma = exp(eta)/(1 + exp(eta))^2
+  grad = sigma * c(1, x1, x2)
+  return(grad)
+
+}
+
 grad.loglogistic = function(x, theta) {
 
   eta = theta[1] + theta[2] * log(x)
