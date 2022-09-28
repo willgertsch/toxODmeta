@@ -101,7 +101,22 @@ toxODmetaApp = function(...) {
         )
       ),
       tabPanel(
-        "Model"
+        "Model",
+        sidebarLayout(
+          sidebarPanel(
+            numericInput("model_bound", "Upper bound", 10, 1, NA, 1),
+            selectInput("fit_model", "Model", models, selected = "logistic")
+          ),
+          mainPanel(
+            plotOutput("model_plot", click = "plot_click"),
+            actionButton("fit", "Fit"),
+            actionButton("rem_point", "Remove Last Point"),
+            actionButton("clear", "Clear all"),
+            fileInput("upload", "Import data from file", accept = ".csv"),
+            verbatimTextOutput("model_out"),
+            actionButton("copymodel", "Copy model to design input")
+          )
+        )
       ),
       tabPanel(
         "Find",
@@ -224,6 +239,118 @@ toxODmetaApp = function(...) {
                             #color = factor(),
                             #shape = factor()
     )
+
+    ############################################################################
+    # code for Model tab
+    ############################################################################
+    output$model_plot = renderPlot({
+
+      # update data frame if there is user imported ata
+      #file_input()
+      # update upper bound based on data
+      if (length(values$DT$x > 0)) { # only correct if there is data
+        if (input$model_bound < max(values$DT$x)) {
+          updateNumericInput(session, "model_bound", value = max(values$DT$x))
+        }
+      }
+
+      ggp = ggplot2::ggplot(values$DT, ggplot2::aes(x = x, y = y)) +
+        # geom_point(aes(color = color,
+        #                shape = shape), size = 5) +
+        ggplot2::geom_point(color = "red", shape = "circle", size = 5, alpha = 1) +
+        ggplot2::lims(x = c(0.1, input$model_bound), y = c(0, 1)) +
+        ggplot2::theme_bw() +
+        # include so that colors don't change as more color/shape chosen
+        #scale_color_discrete(drop = FALSE) +
+        #scale_shape_discrete(drop = FALSE) +
+        ggplot2::labs(y = "probability of response", x = "X",
+             title = "Model fit") +
+        ggplot2::geom_abline(slope = 0, intercept = 0.5, linetype = 4) +
+        ggplot2::annotate(geom = "text", x = input$model_bound, y = 0.55, label = "ED50")
+
+
+      # if there non NA values for the predicted values, plot these as well
+      if (sum(!is.na(values$DT$yhat)) > 0) {
+        ggp = ggp + ggplot2::geom_line(ggplot2::aes(x=x, y=yhat))
+      }
+
+
+      # display plot
+      ggp
+    })
+
+    ## add new row to reactive dataframe upon clicking plot ##
+    observeEvent(input$plot_click, {
+      # each input is a factor so levels are consistent for plotting characteristics
+      # I modify this code to produce an outcome for logistic regression
+      # each point represents 100 observations at that x value
+      # y is the number of positive responses received
+      # this gives a binomial response
+
+      # make sure x and y are positive
+      # this fixes missing values and is required for FP anyways
+      x_coord = max(0.01, input$plot_click$x)
+      y_coord = max(0, input$plot_click$y)
+      add_row <- data.frame(x = x_coord,
+                            y = y_coord,
+                            yhat = NA
+                            #color = factor(input$color, levels = c("Pink", "Green", "Blue")),
+                            #shape = factor(input$shape, levels = c("Circle", "Triangle"))
+      )
+      # add row to the data.frame
+      values$DT <- rbind(values$DT, add_row)
+    })
+
+    ## 4. remove row on actionButton click ##
+    observeEvent(input$rem_point, {
+      rem_row <- values$DT[-nrow(values$DT), ]
+      values$DT <- rem_row
+    })
+
+    # clear data frame
+    observeEvent(input$clear, {
+      values$DT <- data.frame(x = numeric(),
+                              y = numeric(),
+                              yhat = numeric()
+                              #color = factor(),
+                              #shape = factor()
+      )
+    })
+
+    # model fitting button
+    observeEvent(input$fit, {
+
+      # save model data
+      model_data = values$DT
+
+      # calculate number of successes
+      successes = round(model_data$y * 100)
+
+      # x: model_data$x
+      # y: successes
+      # fit model
+      out = fit_nonlinear_model(successes, model_data$x, input$fit_model)
+
+      # save to reactive object
+      values$DT$yhat = out$yhat
+
+      # save data
+      # values$p1 = out$p1
+      # values$p2 = out$p2
+      # values$beta0 = out$beta0
+      # values$beta1 = out$beta1
+      # values$beta2 = out$beta2
+      # values$bound = input$fp_bound
+      # values$aic = out$aic
+      # values$bic = out$bic
+
+      # save degree values
+      # if (input$fpdegree == 3 | input$fpdegree == "Standard cubic") {
+      #   values$beta3 = out$beta3
+      #   values$p3  = out$p3
+      # }
+
+    })
 
     ############################################################################
     # code for Find tab
