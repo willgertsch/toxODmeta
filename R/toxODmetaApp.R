@@ -18,7 +18,9 @@ toxODmetaApp = function(...) {
   )
   algorithms = c(
     "PSO",
-    "DE"
+    "DE",
+    "GWO",
+    "HS"
   )
 
   ui = fixedPage(
@@ -113,10 +115,9 @@ toxODmetaApp = function(...) {
           style = "text-align:left;"
         ),
         tags$p(
-          "This section describes the algorithms available to use in the app.
-          The app currently supports a selection of algorithms from the
-          metaheuristicOpt package. The algorithms in this selection were
-          included because they had the best performance."
+          "We have included several different metaheuristic algorithms for finding optimal designs.
+      These include Particle Swarm Optimization, the Grey Wolf Optimizer, the Harmony Search Algorithm, and Differential Evolution.
+      The algorithms selected generally have good performance for this problem, but based on testing we recommend Differential Evolution"
         )
       ),
       tabPanel(
