@@ -6,10 +6,10 @@
 # dPsi: derivative of the objective function wrt M
 # M: information matrix
 # theta: model parameters
-sens = function(z, grad, dPsi, M, theta) {
+sens = function(z, grad, dPsi, M, theta, param) {
 
   dg = grad(z, theta)
-  dM = dPsi(M)
+  dM = dPsi(M, param)
   y = t(dg) %*% dM %*% dg - sum(diag(M %*% dM))
   return(y)
 }

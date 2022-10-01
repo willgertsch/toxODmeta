@@ -61,13 +61,13 @@ toxODmeta = function(problem, alg_options, seed) {
   else if (obj == "A") {
     obj_fun = obj.A
   }
-  # else if (obj == "addrisk") {
-  #   obj_fun = obj.addrisk
-  #
-  #   # compute gradients
-  #   grad = grad_fun_factory(model)
-  #   param = c(grad(d1), grad(d0))
-  # }
+  else if (obj == "addrisk") {
+    obj_fun = obj.c # special case of c
+
+    # compute gradients
+    # c vector in this case is difference of gradients
+    param = grad_fun(d1, theta) - grad_fun(d0, theta)
+  }
   else
     stop("Objective not supported")
 

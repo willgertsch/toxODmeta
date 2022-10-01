@@ -37,11 +37,10 @@ obj.c = function(M, param) {
 # objective for estimating additional risk
 # Var(P(d_1) - P(d_0))
 # special case of c-optimality
-# grad_d1, grad_d0 are values of gradient at doses d1 and d0
-obj.addrisk = function(M, param) {
-
-  grad_d1 = param[1]
-  grad_d0 = param[2]
-  c = grad_d1 - grad_d0
-  return(obj.c(M, c))
-}
+# param contains the gradient values evaluated at the two doses
+# assuming param is a vector of length 2p, where p is the number of paramters
+# obj.addrisk = function(M, param) {
+#
+#   c = param
+#   return(obj.c(M, c))
+# }

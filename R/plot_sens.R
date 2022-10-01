@@ -12,9 +12,20 @@ plot_sens = function(x, w, problem, M, grad_fun) {
   # select derivative function for sensitivity function
   if (problem$obj == "D") {
     dPsi = dPsi.D
+    param = NULL
   }
   else if (problem$obj == "A") {
     dPsi = dPsi.A
+    param = NULL
+  }
+  else if (problem$obj == "addrisk") {
+
+    dPsi = dPsi.c
+    # compute c vector
+    d1 = problem$d1
+    d0 = problem$d0
+    theta = problem$theta
+    param = grad_fun(d1, theta) - grad_fun(d0, theta)
   }
   else {
     # expand this to handle solving design problems with no verification
@@ -29,7 +40,7 @@ plot_sens = function(x, w, problem, M, grad_fun) {
   }
   else {
     Minv = solve(M)
-    yvals = sapply(xvals, sens, grad_fun, dPsi, M, problem$theta)
+    yvals = sapply(xvals, sens, grad_fun, dPsi, M, problem$theta, param)
   }
 
 

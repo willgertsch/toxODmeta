@@ -14,7 +14,8 @@ toxODmetaApp = function(...) {
   )
   objectives = c(
     "D",
-    "A"
+    "A",
+    "addrisk"
   )
   algorithms = c(
     "PSO",
@@ -199,6 +200,22 @@ toxODmetaApp = function(...) {
               "objective",
               "Objective",
               objectives
+            ),
+            numericInput(
+              "d1",
+              "Dose 1",
+              5,
+              0,
+              Inf,
+              0.01
+            ),
+            numericInput(
+              "d0",
+              "Dose 0",
+              0,
+              0,
+              Inf,
+              0.01
             ),
             numericInput(
               "bound",
@@ -427,6 +444,8 @@ toxODmetaApp = function(...) {
         problem = list()
         problem$model = input$model
         problem$theta = c(input$theta0, input$theta1, input$theta2, input$theta3, input$theta4)
+        problem$d1 = input$d1
+        problem$d0 = input$d0
         problem$obj = input$objective
         problem$bound = input$bound
         problem$pts = input$pts
