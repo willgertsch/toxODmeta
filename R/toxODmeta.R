@@ -49,6 +49,9 @@ toxODmeta = function(problem, alg_options, seed) {
   else if (model == "weibull") {
     grad_fun = grad.weibull
   }
+  else if (model == "loglogistic5") {
+    grad_fun = grad.loglogistic5
+  }
   else {
     stop("Model not supported")
   }

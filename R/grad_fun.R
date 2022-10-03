@@ -67,3 +67,25 @@ grad.weibull = function(x, theta) {
   grad = sigma * c(1, x^theta[3], x^theta[3] * log(x))
   return(grad)
 }
+
+# 5 parameter log-logistic function from drc package
+grad.loglogistic5 = function(x, theta) {
+  eta = theta[1] * (log(x) - log(theta[4]))
+
+  # individual gradient components
+  d1 = (theta[2] - theta[3]) * theta[5] * (1 + exp(theta))^(-theta[5] - 1) *
+    exp(eta) * (log(x) - log(theta[4]))
+
+  d2 = 1 - (1 + exp(eta))^(-theta[5])
+
+  d3 = (1 + exp(theta))^(-theta[5])
+
+  d4 = (theta[3] - theta[2]) * theta[5] * (1 + exp(eta))^(-theta[5] - 1) *
+    exp(eta) * (theta[1]/theta[4])
+
+  d5 = (theta[2] - theta[3]) * (1 + exp(eta))^(-theta[5]) * log(1 + exp(eta))
+
+  grad = c(d1, d2, d3, d4, d5)
+  return(grad)
+
+}

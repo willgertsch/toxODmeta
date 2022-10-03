@@ -10,7 +10,8 @@ toxODmetaApp = function(...) {
     "logistic-fp",
     "loglogistic",
     "exponential",
-    "weibull"
+    "weibull",
+    "loglogistic5"
   )
   objectives = c(
     "D",
@@ -465,6 +466,8 @@ toxODmetaApp = function(...) {
           problem$theta = problem$theta[1:3]
         else if (problem$model == "loglogistic")
           problem$theta = problem$theta[1:3]
+        else if (problem$model == "loglogistic5")
+          problem$theta = problem$theta[1:5]
 
         # set up algorithm options
         alg_options = list()
