@@ -29,7 +29,9 @@ plot_sens = function(x, w, problem, M, grad_fun) {
   }
   else {
     # expand this to handle solving design problems with no verification
-    stop("No derivative specified for this objective.")
+    #stop("No derivative specified for this objective.")
+    # use y=2 to denote missing derivative function
+    yvals = rep(2, length(xvals))
   }
 
   # compute sensitivity function
@@ -44,16 +46,43 @@ plot_sens = function(x, w, problem, M, grad_fun) {
   }
 
 
+
   # plot
-  p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
-    ggplot2::geom_line(color = "blue") +
-    ggplot2::geom_hline(yintercept = 0) +
-    #ggplot2::geom_point(aes(x = design_points, y = pts_ch), col = "red", size = 3) +
-    ggplot2::geom_vline(xintercept = x, color = "red", linetype = "dashed") +
-    ggplot2::theme_bw() +
-    ggplot2::labs(title = "Equivalence Theorem Check") +
-    ggplot2::xlab("x") +
-    ggplot2::ylab("ch(x)")
+  # display message if missing matrix deriv or singular matrix
+  if (sum(yvals - 1) == 0) {
+    p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
+      ggplot2::geom_line(color = "blue") +
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::theme_bw() +
+      ggplot2::labs(title = "Equivalence Theorem Check") +
+      ggplot2::xlab("x") +
+      ggplot2::ylab("ch(x)") +
+      ggplot2::annotate("text", x = mean(xvals), y = 0.5,
+                       label = "Singular information matrix", size = 5)
+  }
+  else if (sum(yvals - 2) == 0) {
+    p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
+      ggplot2::geom_line(color = "blue") +
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::theme_bw() +
+      ggplot2::labs(title = "Equivalence Theorem Check") +
+      ggplot2::xlab("x") +
+      ggplot2::ylab("ch(x)") +
+      ggplot2::annotate("text", x = mean(xvals), y = 0.5,
+                       label = "No dPsi defined", size = 5)
+  }
+  else {
+    p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
+      ggplot2::geom_line(color = "blue") +
+      ggplot2::geom_hline(yintercept = 0) +
+      #ggplot2::geom_point(aes(x = design_points, y = pts_ch), col = "red", size = 3) +
+      ggplot2::geom_vline(xintercept = x, color = "red", linetype = "dashed") +
+      ggplot2::theme_bw() +
+      ggplot2::labs(title = "Equivalence Theorem Check") +
+      ggplot2::xlab("x") +
+      ggplot2::ylab("ch(x)")
+  }
+
 
   return(p)
 }
