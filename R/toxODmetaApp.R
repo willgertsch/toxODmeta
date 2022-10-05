@@ -10,8 +10,9 @@ toxODmetaApp = function(...) {
     "logistic-fp",
     "loglogistic",
     "exponential",
-    "weibull",
-    "loglogistic5"
+    "weibull"
+    #"loglogistic4",
+    #"loglogistic5"
   )
   objectives = c(
     "D",
@@ -94,6 +95,14 @@ toxODmetaApp = function(...) {
           "The loglogistic model is defined as
           $$
           P(d) = \\theta_2 + \\frac{(1-\\theta_2)}{1 + \\exp\\left[ -(\\theta_0 + \\theta_1 \\log d)\\right]}
+          $$
+          Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
+          "
+        ),
+        tags$p(
+          "The 4 parameter loglogistic model is defined as
+          $$
+          P(d) = \\theta_1 + \\frac{\\theta_2 - \\theta_1}{1 + \\exp \\left[ \\theta_0(\\log d - \\log \\theta_3)\\right]}
           $$
           Note that \\( \\theta_2\\) should be between 0 and 1. This is NOT strictly enforced in the app.
           "

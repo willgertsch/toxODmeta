@@ -49,6 +49,9 @@ toxODmeta = function(problem, alg_options, seed) {
   else if (model == "weibull") {
     grad_fun = grad.weibull
   }
+  else if (model == "loglogistic4") {
+    grad_fun = grad.loglogistic4
+  }
   else if (model == "loglogistic5") {
     grad_fun = grad.loglogistic5
   }

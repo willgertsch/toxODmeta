@@ -68,6 +68,24 @@ grad.weibull = function(x, theta) {
   return(grad)
 }
 
+# 4 parameter log-logistic function
+# drc package version
+grad.loglogistic4 = function(x, theta) {
+
+  b = theta[1]
+  c = theta[2]
+  d = theta[3]
+  y = theta[4] # e in the drc package notation
+
+  eta = exp(b*(log(x) - log(y)))
+  db = (d - c) * (log(x) - log(y)) * eta/(eta + 1)^2
+  dc = (x^b) / (x^b + y^b)
+  dd = (y^b) / (x^b + y^b)
+  dy = b * x^b * y^(b - 1) * (d-c) / (x^b + y^b)^2
+  grad = c(db, dc, dd, dy)
+  return(grad)
+}
+
 # 5 parameter log-logistic function from drc package
 grad.loglogistic5 = function(x, theta) {
   eta = theta[1] * (log(x) - log(theta[4]))
