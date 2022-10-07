@@ -49,7 +49,7 @@ plot_sens = function(x, w, problem, M, grad_fun) {
 
   # plot
   # display message if missing matrix deriv or singular matrix
-  if (sum(yvals - 1) == 0) {
+  if (sum(yvals - 1, na.rm = T) == 0) {
     p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
       ggplot2::geom_line(color = "blue") +
       ggplot2::geom_hline(yintercept = 0) +
@@ -60,7 +60,7 @@ plot_sens = function(x, w, problem, M, grad_fun) {
       ggplot2::annotate("text", x = mean(xvals), y = 0.5,
                        label = "Singular information matrix", size = 5)
   }
-  else if (sum(yvals - 2) == 0) {
+  else if (sum(yvals - 2, na.rm = T) == 0) {
     p = ggplot2::ggplot(mapping = ggplot2::aes(y = yvals, x = xvals)) +
       ggplot2::geom_line(color = "blue") +
       ggplot2::geom_hline(yintercept = 0) +

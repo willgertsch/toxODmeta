@@ -29,7 +29,7 @@ toxODmetaApp = function(...) {
   ui = fixedPage(
     withMathJax(),
     tabsetPanel(
-      selected = "Model",
+      selected = "Find",
       type = "pills",
       id = "tabpanel",
       tabPanel(
