@@ -43,7 +43,7 @@ grad.logistic.fp = function(x, theta) {
 
 grad.loglogistic = function(x, theta) {
 
-  eta = theta[1] + theta[2] * supressWarnings(log(x))
+  eta = theta[1] + theta[2] * suppressWarnings(log(x))
   sigma = exp(eta)/(1 + exp(eta))^2
   g1 = (1 - theta[3]) * sigma
   g2 = (1 - theta[3]) * sigma * suppressWarnings(log(x))
