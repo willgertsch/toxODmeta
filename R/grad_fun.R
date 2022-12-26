@@ -107,3 +107,22 @@ grad.loglogistic5 = function(x, theta) {
   return(grad)
 
 }
+
+# mixture model with logit link and common intercept
+# p105 from statistical models in tox book
+grad.mix1 = function(x, theta) {
+
+  # name parameters
+  a = theta[1]
+  b = theta[2]
+  c = theta[3]
+  d = theta[4]
+
+  d1 = 1 / (1 + exp(-(b + c * x))) - 1 / (1 + exp(-(b + d * x)))
+  d2 = a * exp(-(b + c * x)) / (1 + exp(-(b + c * x)))^2 +
+    (1 - a) * exp(-(b + d * x)) / (1 + exp(-(b + d * x)))^2
+  d3 = a * x * exp(-(b + c * x)) / (1 + exp(-(b + c * x)))^2
+  d4 = (1 - a) * x * exp(-(b + d * x)) / (1 + exp(-(b + d * x)))^2
+  grad = c(d1, d2, d3, d4)
+  return(grad)
+}
