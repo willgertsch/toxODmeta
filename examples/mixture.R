@@ -6,7 +6,7 @@
 # odds are 1.5 per unit in one group and 2.5 in other
 bound = 10
 pts = 4
-theta = c(0.8, log(.01/.99), log(1.5), log(2.5))
+theta = c(0.7, log(.01/.99), log(1.5), log(2.5))
 grad_fun = grad.mix1
 obj_fun = obj.D
 param = c()
@@ -16,7 +16,7 @@ control = list(numPopulation = 100, maxIter = 500)
 result = metaheuristicOpt::metaOpt(
   obj_fun_M,
   optimType = "MAX",
-  algorithm = "ALO",
+  algorithm = "DE",
   numVar = 2 * pts,
   rangeVar,
   control,
@@ -32,4 +32,27 @@ M = M.nonlinear(x, w, theta, grad_fun)
 problem = list(bound = bound, obj = "D", theta = theta)
 plot_sens(x, w, problem, M, grad_fun)
 
-# mixture model with differing intercepts
+# test maximin
+theta_grid = matrix(
+  c(0.8, log(.01/.99), log(1.5), log(2.5),
+    0.7, log(.01/.99), log(1.5), log(2.5),
+    0.6, log(.01/.99), log(1.5), log(2.5),
+    0.5, log(.01/.99), log(1.5), log(2.5)
+    ),
+  4, 4, byrow = T
+)
+result_maximin = maximin(
+  grad_fun = grad_fun,
+  obj_fun = obj_fun,
+  bound = bound,
+  pts = pts,
+  numPop = 100,
+  iter = 500,
+  theta_grid,
+  alg = "BHO"
+  )
+# -15.57
+result_maximin$optimumValue
+
+# CSO, ABC, GBS don't work
+
