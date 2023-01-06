@@ -126,3 +126,26 @@ grad.mix1 = function(x, theta) {
   grad = c(d1, d2, d3, d4)
   return(grad)
 }
+
+# mixture of two multistage models
+# Razzaghi (2002) in Envirometrics
+grad.mix2 = function(x, theta) {
+
+  # identify parameters
+  a = theta[1]
+  b = theta[2]
+  c = theta[3]
+  d = theta[4]
+  f = theta[5]
+  g = theta[6]
+
+  # gradient components
+  d1 = g*exp(-a-b*x-c*x^2) + (1-g)*exp(-a-d*x-f*x^2)
+  d2 = g*x*exp(-a-x*(b+c*x))
+  d3 = g * x^2 * exp(-a-x*(b+c*x))
+  d4 = (1 - g)*x*exp(-a-x*(d+f*x))
+  d5 = (1 - g) *x^2 * exp(-a-x*(d+f*x))
+  d6 = exp(-a-d*x-f*x^2) - exp(-a-b*x-c*x^2)
+  grad = c(d1, d2, d3, d4, d5, d6)
+  return(grad)
+}

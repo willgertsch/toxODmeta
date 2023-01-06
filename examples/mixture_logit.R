@@ -1,6 +1,4 @@
-# examples of optimal designs for mixture models
-
-
+# example of optimal designs for mixture modelss
 # model with logit link and equal intercepts
 # baseline probability of response will be .01
 # odds are 1.5 per unit in one group and 2.5 in other
@@ -55,4 +53,69 @@ result_maximin = maximin(
 result_maximin$optimumValue
 
 # CSO, ABC, GBS don't work
+algorithms_list = c(
+  "PSO",
+  "ALO",
+  "GWO",
+  "DA",
+  "FFA",
+  "GA",
+  "GOA",
+  "HS",
+  "MFO",
+  "SCA",
+  "WOA",
+  "CLONALG",
+  "DE",
+  "SFL",
+  "KH",
+  "BA"
+)
 
+# plot comparing performance of different algorithms
+set.seed(2023)
+obj_vals = c()
+times = c()
+replicates = 50
+for (i in 1:length(algorithms_list)) {
+  algorithm = algorithms_list[i]
+  for (j in 1:replicates) {
+    cat(algorithm, ": ", j, "/", replicates, "\n")
+    result = maximin(
+      grad_fun = grad_fun,
+      obj_fun = obj_fun,
+      bound = bound,
+      pts = pts,
+      numPop = 50,
+      iter = 500,
+      theta_grid,
+      alg = algorithm
+    )
+    obj_vals = c(obj_vals, result$optimumValue)
+    times = c(times, result$timeElapsed[1])
+
+  }
+}
+
+df = data.frame(
+  obj = obj_vals,
+  time = times,
+  algorithm = rep(algorithms_list, each = replicates)
+)
+
+library(ggplot2)
+library(dplyr)
+df %>%
+  ggplot(aes(x = algorithm, y = obj)) +
+  geom_point()
+
+df %>%
+  filter(algorithm %in% c("ALO", "CLONALALG", "DE", "GOA", "GWO", "HS", "PSO")) %>%
+  ggplot(aes(x = algorithm, y = obj)) +
+  geom_point()
+
+df %>%
+  filter(algorithm %in% c("ALO", "PSO", "DE")) %>%
+  ggplot(aes(x = algorithm, y = obj)) +
+  geom_point()
+# PSO is best
