@@ -149,3 +149,21 @@ grad.mix2 = function(x, theta) {
   grad = c(d1, d2, d3, d4, d5, d6)
   return(grad)
 }
+
+# Box-Cox Weibull model from Backhaus et al (2000)
+# P(x) = 1 - exp( -exp(theta1 + theta2 * (x^theta3 - 1)/theta3) )
+grad.boxcoxweibull = function(x, theta) {
+
+  # identify parameters
+  a = theta[1]
+  b = theta[2]
+  c = theta[3]
+
+  # gradient components
+  d1 = exp(-exp(a + b*(x^c-1)/c) + a + b*(x^c-1)/c)
+  d2 = (x^c - 1)*exp(-exp(a + b*(x^c-1)/c) + a + b*(x^c-1)/c)/c
+  d3 = (b*x^c * log(x)/c - b*(x^c-1)/c^2) * exp(-exp(a + b*(x^c-1)/c) + a + b*(x^c-1)/c)
+  grad = c(d1, d2, d3)
+  return(grad)
+
+}

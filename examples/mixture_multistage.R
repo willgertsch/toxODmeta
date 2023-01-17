@@ -106,4 +106,28 @@ df %>%
   theme_bw()
 # HS seems best, followed by DE
 
+# maximin for different mixing parameters
+theta_grid = matrix(
+  c(
+    .00833, -.10050, .00067, -0.00004, .00006, .00497,
+    .01, -.10050, .00067, -0.00004, .00006, .00497,
+    .05, -.10050, .00067, -0.00004, .00006, .00497,
+    .1, -.10050, .00067, -0.00004, .00006, .00497,
+    .5, -.10050, .00067, -0.00004, .00006, .00497
+  ),
+  5, 6, byrow = T
+)
 
+result_maximin = maximin(
+  grad_fun = grad_fun,
+  obj_fun = obj_fun,
+  bound = bound,
+  pts = 10,
+  numPop = 100,
+  iter = 1000,
+  theta_grid,
+  alg = "PSO"
+)
+
+result_maximin
+# 0
