@@ -46,6 +46,35 @@ D_opt = obj_fun_M(vars)
 D = obj_fun_M(c(0, 30, 35, 45, 60, 75, 100, 150, rep(1/8, 8)))
 
 (D/D_opt)^(1/6) # very high efficiency
+# 0.9925327
+
+# find A optimal design
+pts = 6
+obj_fun = obj.A
+obj_fun_M = obj_fun_factory(grad_fun, obj_fun, theta, param)
+rangeVar = matrix(c(rep(c(0, bound), pts), rep(c(0,1), pts)), nrow = 2)
+control = list(numPopulation = 100, maxIter = 1000)
+result = metaheuristicOpt::metaOpt(
+  obj_fun_M,
+  optimType = "MAX",
+  algorithm = "PSO",
+  numVar = 2 * pts,
+  rangeVar,
+  control,
+  seed = 1234
+)
+result
+vars = result$result
+x = vars[1:pts]
+w = vars[(pts+1):(2*pts)]
+M = M.nonlinear(x, w, theta, grad_fun)
+problem = list(bound = bound, obj = "A", theta = theta)
+plot_sens(x, w, problem, M, grad_fun)
+
+A_opt = obj_fun_M(vars)
+A = obj_fun_M(c(0, 30, 35, 45, 60, 75, 100, 150, rep(1/8, 8)))
+
+A_opt/A # 0.3205199
 
 # simulation study to confirm optimality
 # loop through  algorithms for a few different choices of design points
