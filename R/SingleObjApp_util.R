@@ -42,6 +42,7 @@ model_display = function(model) {
 
 # convert raw text input to a vector of parameter values
 # pulling this out into its own function because input checking could be complex
+# useful in multiple places where there is text input
 process_theta = function(text) {
   as.numeric(strsplit(text, ",")[[1]])
 }
