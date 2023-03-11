@@ -167,3 +167,65 @@ grad.boxcoxweibull = function(x, theta) {
   return(grad)
 
 }
+
+# EPA BMD software models ######################################################
+# redoing some models just to make sure parameterization is correct
+
+# dichotomous hill
+grad.epa.dh = function(x, theta) {
+
+  g = theta[1]
+  v = theta[2]
+  a = theta[3]
+  b = theta[4]
+
+  return(grad)
+}
+
+# log-logistic
+grad.epa.loglogistic = function(x, theta) {
+
+  return(grad)
+}
+
+# log-probit
+grad.epa.logprobit = function(x, theta) {
+
+  return(grad)
+}
+
+# multistage degree 1
+grad.epa.multistage1 = function(x, theta) {
+
+  return(grad)
+}
+
+# multistage degree 2
+grad.epa.multistage2 = function(x, theta) {
+
+  return(grad)
+}
+
+# multistage degree 3
+grad.epa.multistage3 = function(x, theta) {
+
+  return(grad)
+}
+
+# probit
+grad.epa.probit = function(x, theta) {
+
+  return(grad)
+}
+
+# quantile linear
+grad.epa.quantilelinear = function(x, theta) {
+
+  return(grad)
+}
+
+# weibull
+grad.epa.weibull = function(x, theta) {
+
+  return(grad)
+}
