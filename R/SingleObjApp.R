@@ -47,10 +47,24 @@ SingleObjApp = function(...) {
           style = "text-align:left;"
         ),
         tags$p(
-          "This app allows the user to find optimal designs for several
+          "This app allows the user to find optimal experimental designs for several
           nonlinear models used in toxicology. It also provides a tool for
-          comparing the efficiency of any two designs. This explains how to use
-          the app and the background theory needed to interpret the results."
+          comparing the efficiency of any two designs. This page explains how to use
+          the app and the optimal design theory used to generate and interpret the results."
+        ),
+        tags$p(
+          "This app uses metaheuristic algorithms, which are a class of
+          optimization methods that have been increasingly used in recent years
+          to solve complex problems that are difficult to solve using standard
+          methods. They are inspired by natural phenomena and simulate the
+          behavior of a group of entities, such as animals, insects, or particles,
+          in search of an optimal solution. Some examples of metaheuristic algorithms
+          are Particle Swarm Optimization (PSO), Differential Evolution (DE),
+          Harmony Search (HS), and Grey Wolf Optimizer (GWO). These algorithms have
+          shown great success in solving a wide range of problems, including engineering,
+          economics, logistics, and data analysis. They are especially useful in optimal
+          design of experiments because they can easily be applied to a wide variety
+          of design problems."
         ),
         tags$h3(
           "The design tab",
@@ -63,9 +77,9 @@ SingleObjApp = function(...) {
           metaheuristic to use to find the design and the iterations and swarm size
           options tell the algorithm how long to run and the diversity of the search.
           Increasing both the number of iterations and the swarm size will make it
-          more likely that the optimal design will be found at the expense of
-          run time. The dose limit option contols the highest dose allowed.
-          This should be chosen based on background knowledge of the
+          more likely that the optimal design will be found but increases the run
+          time. The dose limit option contols the highest dose allowed.
+          The limit should be chosen based on background knowledge of the
           experiment. A lower dose limit will limit the search space and make the
           optimal design easier to find. The design points option controls how
           many doses will be allowed in the optimal design. If too few doses are
@@ -76,7 +90,7 @@ SingleObjApp = function(...) {
         tags$p(
           "The main pane alloes the user to select the model, parameter values,
           and the design objective. Theta values should be entered separated by
-          commas. Pressing the Find design button will run the selected algorithm
+          commas. Pressing the find design button will run the selected algorithm
           options on the design problem, display the final design, and display a
           graphical check of optimality.
           If plotted function is less than 0 with equality at the doses in the design,
@@ -86,7 +100,7 @@ SingleObjApp = function(...) {
           a message about a singular information matrix, then there is likely a
           problem with how the design problem is specified. The most common issue
           is that the number of doses is too few. Another common issue is that
-          the dose range is incorrect."
+          the dose range may be too small for the model in question."
         ),
         tags$h3(
           "Compare tab",
